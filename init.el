@@ -1,16 +1,20 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 
+(add-hook 'window-setup-hook 'toggle-frame-maximized t)
 (toggle-scroll-bar -1)
 (tool-bar-mode -1)
 (global-linum-mode t)
 (global-hl-line-mode t)
 (set-frame-font "Source Code Pro 14" nil t)
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq frame-resize-pixelwise t)
 (setq inhibit-startup-message t)
-(setq python-shell-completion-native-enable nil)
+(setq py-python-command "python3")
+(setq python-shell-interpreter "python3")
 
 (when (memq window-system '(mac ns x)) 
   (exec-path-from-shell-initialize))
@@ -109,11 +113,6 @@
   :config (global-set-key (kbd "C-=") 'er/expand-region))
 
 (use-package 
-  solarized-theme 
-  :ensure t 
-  :config (load-theme 'solarized-light t))
-
-(use-package 
   iedit 
   :ensure t)
 
@@ -128,6 +127,31 @@
   (setq web-mode-enable-auto-closing t)
   (setq web-mode-enable-auto-quoting t))
 
+(use-package
+  smartparens
+  :ensure smartparens
+  :config 
+  (progn
+    (require 'smartparens-config)
+    (require 'smartparens-html)
+    (require 'smartparens-python)
+    (require 'smartparens-latex)
+    (smartparens-global-mode t)
+    (show-smartparens-global-mode t)))
+
+(use-package
+  neotree
+  :ensure t
+  :bind (("C-`" . neotree-toggle))
+  :config
+  (progn
+    (require 'neotree)))
+
+(use-package 
+  solarized-theme 
+  :ensure t 
+  :config (load-theme 'solarized-dark t))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -135,7 +159,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (web-mode iedit iedit-mode expand-region undo-tree exec-path-from-shell jedi flycheck zenburn-theme which-key use-package try solarized-theme org-bullets org elisp-format counsel color-theme auto-complete ace-window))))
+    (prettier-js neotree web-mode iedit iedit-mode expand-region undo-tree exec-path-from-shell jedi flycheck zenburn-theme which-key use-package try solarized-theme org-bullets org elisp-format counsel color-theme auto-complete ace-window))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
